@@ -1,0 +1,23 @@
+{
+  "name": "typescript-react-sandbox",
+  "version": "1.0.0",
+  "description": "Sandbox app with pre-configured typescript with react. Manual is here: https://www.typescriptlang.org/docs/handbook/react-&-webpack.html",
+  "main": "index.js",
+  "dependencies": {
+    "@types/react": "^0.14.55",
+    "@types/react-dom": "^0.14.19",
+    "react": "^15.4.1",
+    "react-dom": "^15.4.1"
+  },
+  "devDependencies": {
+    "awesome-typescript-loader": "^3.0.0-beta.14",
+    "http-server": "^0.9.0",
+    "source-map-loader": "^0.1.5",
+    "typescript": "^2.1.4"
+  },
+  "scripts": {
+    "server": "./node_modules/http-server/bin/http-server ."
+  },
+  "author": "Andrey Serdjuk",
+  "license": "ISC"
+}
