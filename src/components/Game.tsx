@@ -92,8 +92,8 @@ export class Game extends React.Component<undefined, GameState> {
     [history, historyStep, current, squares] = this.unpackState();
 
     squares[i] = current.xIsNext? 'X' : 'O';
-    let winner = Game.calculateWinner(current.squares);
 
+    let winner = Game.calculateWinner(history[history.length - 1].squares);
     if (winner) {
       alert('Hey, this is the end.');
       return;
