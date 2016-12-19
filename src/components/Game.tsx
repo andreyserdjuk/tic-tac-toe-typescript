@@ -1,12 +1,22 @@
 import * as React from "react";
 import {Board} from "./Board";
 
+export interface GameHistoryStep {
+  squares: Array<string|null>,
+  xIsNext: boolean,
+}
+
 export interface GameState {
-    history: Array<{squares: Array<string|null>, xIsNext: boolean}>,
+    history: Array<GameHistoryStep>,
     historyStep: number,
 }
 
 export class Game extends React.Component<undefined, GameState> {
+  /**
+   * These are cell sets to define a winner.
+   * For example if 0, 1, 2 Board cells filled with 'X' - x is won.
+   * @see Game.calculateWinner()
+   */
   private static winSchema = [
     [0,1,2],
     [3,4,5],
@@ -29,48 +39,14 @@ export class Game extends React.Component<undefined, GameState> {
     };
   }
 
-  handleClick(i:number) {
-    console.log(i);
-    const history = this.state.history;
-    const historyStep = this.state.historyStep;
-    const current = history[historyStep];
-    const squares = current.squares.slice();
-    squares[i] = current.xIsNext? 'X' : 'O';
-
-    const winner = Game.calculateWinner(current.squares);
-
-    if (winner) {
-      alert('Hey, this is the end.');
-      return;
-    }
-
-    this.setState({
-      history: this.state.history.concat({
-          squares: squares,
-          xIsNext: !current.xIsNext,
-      }),
-      historyStep: this.state.historyStep + 1
-    });
-  }
-
-  static calculateWinner(s:Array<string>):string|boolean {
-    let wonLine = Game.winSchema.find(el => s[el[0]] === s[el[1]] && s[el[1]] === s[el[2]] && s[el[0]] !== null);
-    return wonLine? s[wonLine[0]] : false;
-  }
-
-  jumpTo(step:number) {
-    this.setState({
-      history: this.state.history.slice(),
-      historyStep: step,
-    });
-  }
-
   render() {
-    const history = this.state.history;
-    const historyStep = this.state.historyStep;
-    const current = history[historyStep];
-    const winner = Game.calculateWinner(current.squares);
+    let history;
+    let historyStep;
+    let current;
+    let squares;
+    [history, historyStep, current, squares] = this.unpackState();
 
+    let winner = Game.calculateWinner(squares);
     let nextPlayer = current.xIsNext? 'X' : 'O';
     let status = winner? `Winner: ${winner}` : `Next player: ${nextPlayer}`
 
@@ -101,5 +77,50 @@ export class Game extends React.Component<undefined, GameState> {
         </div>
       </div>
     );
+  }
+  
+  static calculateWinner(s:Array<string>):string|boolean {
+    let wonLine = Game.winSchema.find(el => s[el[0]] === s[el[1]] && s[el[1]] === s[el[2]] && s[el[0]] !== null);
+    return wonLine? s[wonLine[0]] : false;
+  }
+
+  handleClick(i:number) {
+    let history;
+    let historyStep;
+    let current;
+    let squares;
+    [history, historyStep, current, squares] = this.unpackState();
+
+    squares[i] = current.xIsNext? 'X' : 'O';
+    let winner = Game.calculateWinner(current.squares);
+
+    if (winner) {
+      alert('Hey, this is the end.');
+      return;
+    }
+
+    this.setState({
+      history: this.state.history.concat({
+          squares: squares,
+          xIsNext: !current.xIsNext,
+      }),
+      historyStep: this.state.historyStep + 1
+    });
+  }
+
+  jumpTo(step:number) {
+    this.setState({
+      history: this.state.history.slice(),
+      historyStep: step,
+    });
+  }
+
+  private unpackState():[Array<GameHistoryStep>, number, GameHistoryStep, Array<string|null>] {
+    return [
+      this.state.history,
+      this.state.historyStep,
+      this.state.history[this.state.historyStep],
+      this.state.history[this.state.historyStep].squares.slice(),
+    ];
   }
 }
