@@ -13,10 +13,13 @@
     "awesome-typescript-loader": "^3.0.0-beta.14",
     "http-server": "^0.9.0",
     "source-map-loader": "^0.1.5",
-    "typescript": "^2.1.4"
+    "typescript": "^2.1.4",
+    "webpack": "^3.0.0"
   },
   "scripts": {
-    "server": "./node_modules/http-server/bin/http-server ."
+    "server": "./node_modules/http-server/bin/http-server .",
+    "webpack": "webpack",
+    "webpack-debug": "webpack --env.debug"
   },
   "author": "Andrey Serdjuk",
   "license": "ISC"

@@ -8,13 +8,9 @@
         "jsx": "react"
     },
     "include": [
-        "./**/*"
+        "./src/**/*"
     ],
     "exclude": [
-        "node_modules",
-        "typings/modules",
-        "typings/globals",
-        "typings/node",
-        "typings/tsd.d.ts"
+        "node_modules"
     ]
 }
